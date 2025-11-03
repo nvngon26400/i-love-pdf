@@ -4,7 +4,6 @@ import { t, type Lang } from '../utils/i18n'
 export default function AudioLab({ lang }: { lang: Lang }) {
   const [recording, setRecording] = useState(false)
   const [audioUrl, setAudioUrl] = useState<string | null>(null)
-  const [audioBlob, setAudioBlob] = useState<Blob | null>(null)
   const [buffer, setBuffer] = useState<AudioBuffer | null>(null)
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const chunksRef = useRef<Blob[]>([])
@@ -39,7 +38,6 @@ export default function AudioLab({ lang }: { lang: Lang }) {
       }
       recorder.onstop = async () => {
         const blob = new Blob(chunksRef.current, { type: 'audio/webm' })
-        setAudioBlob(blob)
         const url = URL.createObjectURL(blob)
         setAudioUrl(url)
         const arr = await blob.arrayBuffer()
