@@ -1,7 +1,7 @@
 import html2pdf from 'html2pdf.js'
 import jsPDF from 'jspdf'
 import { GlobalWorkerOptions, getDocument } from 'pdfjs-dist'
-import { PDFDocument, rgb } from 'pdf-lib'
+import { PDFDocument } from 'pdf-lib'
 import { Document, Packer, Paragraph, TextRun } from 'docx'
 import pptxgen from 'pptxgenjs'
 import * as XLSX from 'xlsx'
@@ -197,14 +197,14 @@ export async function excelToPdf(file: File, outname: string) {
     container.style.fontFamily = 'Arial, sans-serif'
     
     // Style the table
-    const tables = container.querySelectorAll('table')
-    tables.forEach(table => {
+    const tables = container.querySelectorAll<HTMLTableElement>('table')
+    tables.forEach((table) => {
       table.style.borderCollapse = 'collapse'
       table.style.width = '100%'
       table.style.margin = '10px 0'
-      
-      const cells = table.querySelectorAll('td, th')
-      cells.forEach(cell => {
+
+      const cells = table.querySelectorAll<HTMLElement>('td, th')
+      cells.forEach((cell) => {
         cell.style.border = '1px solid #ddd'
         cell.style.padding = '8px'
         cell.style.textAlign = 'left'
@@ -260,10 +260,7 @@ export async function pdfToWord(file: File, outname: string) {
       }],
     })
     
-    const buffer = await Packer.toBuffer(doc)
-    const blob = new Blob([buffer], { 
-      type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' 
-    })
+    const blob = await Packer.toBlob(doc)
     const url = URL.createObjectURL(blob)
     triggerDownload(url, outname)
     URL.revokeObjectURL(url)
@@ -298,13 +295,7 @@ export async function pdfToPowerpoint(file: File, outname: string) {
       })
     }
     
-    const buffer = await pres.writeFile({ outputType: 'arraybuffer' }) as ArrayBuffer
-    const blob = new Blob([buffer], { 
-      type: 'application/vnd.openxmlformats-officedocument.presentationml.presentation' 
-    })
-    const url = URL.createObjectURL(blob)
-    triggerDownload(url, outname)
-    URL.revokeObjectURL(url)
+    await pres.writeFile({ fileName: outname })
   } catch (err) {
     const msg = err instanceof Error ? err.message : 'Chuyển đổi PDF sang PowerPoint thất bại'
     throw new Error(msg)
@@ -336,8 +327,8 @@ export async function pdfToExcel(file: File, outname: string) {
       XLSX.utils.book_append_sheet(workbook, worksheet, `Trang_${i}`)
     }
     
-    const buffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
-    const blob = new Blob([buffer], { 
+    const buffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' }) as ArrayBuffer
+    const blob = new Blob([buffer], {
       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
     })
     const url = URL.createObjectURL(blob)
@@ -365,7 +356,7 @@ export async function pdfToPdfA(file: File, outname: string) {
     pdfDoc.setModificationDate(new Date())
     
     const pdfBytes = await pdfDoc.save()
-    const blob = new Blob([pdfBytes], { type: 'application/pdf' })
+    const blob = new Blob([pdfBytes.buffer as ArrayBuffer], { type: 'application/pdf' })
     const url = URL.createObjectURL(blob)
     triggerDownload(url, outname)
     URL.revokeObjectURL(url)
