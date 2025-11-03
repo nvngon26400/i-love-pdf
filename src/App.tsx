@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import ThreeBackground from './components/ThreeBackground'
 import ImageLab from './components/ImageLab'
 import VideoLab from './components/VideoLab'
+import ChatLab from './components/ChatLab'
 import UploadDropzone from './components/UploadDropzone'
 import { 
   htmlFileToPdf, 
@@ -20,7 +21,7 @@ import {
 import { t, type Lang } from './utils/i18n'
 
 type ToolKey = 'html2pdf' | 'images2pdf' | 'pdf2jpg' | 'word2pdf' | 'powerpoint2pdf' | 'excel2pdf' | 'pdf2word' | 'pdf2powerpoint' | 'pdf2excel' | 'pdf2pdfa'
-type AppTab = 'pdf' | 'image' | 'video'
+type AppTab = 'pdf' | 'image' | 'video' | 'chat'
 
 function makeTools(lang: Lang) {
   const left: { key: ToolKey; title: string; desc: string }[] = [
@@ -191,6 +192,7 @@ function App() {
             <button className={tab==='pdf'?'active':''} onClick={()=>setTab('pdf')}>{t(lang,'tab_pdf')}</button>
             <button className={tab==='image'?'active':''} onClick={()=>setTab('image')}>{t(lang,'tab_image')}</button>
             <button className={tab==='video'?'active':''} onClick={()=>setTab('video')}>{t(lang,'tab_video')}</button>
+            <button className={tab==='chat'?'active':''} onClick={()=>setTab('chat')}>{t(lang,'tab_chat')}</button>
           </div>
           <select value={lang} onChange={(e) => setLang(e.target.value as Lang)}>
             <option value="vi">🇻🇳 Tiếng Việt</option>
@@ -252,8 +254,10 @@ function App() {
         </div>
         ) : tab==='image' ? (
           <ImageLab lang={lang} />
-        ) : (
+        ) : tab==='video' ? (
           <VideoLab lang={lang} />
+        ) : (
+          <ChatLab lang={lang} />
         )}
 
         {tab==='pdf' && (

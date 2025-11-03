@@ -98,10 +98,35 @@
   border: 1px solid var(--panel-border);
   border-radius: 16px;
   padding: 18px;
+  max-width: 100%;
 }
 .panel h3 { margin: 0 0 12px 0; }
 
 .controls { display: grid; gap: 8px; }
+
+/* Prevent grid children from overflowing their column */
+.two-col > * { min-width: 0; }
+
+/* Form controls normalization */
+.panel textarea {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  resize: vertical;
+}
+.panel input[type="text"],
+.panel input[type="number"],
+.panel input[type="range"],
+.panel input[type="color"],
+.panel input[type="file"],
+.panel select {
+  width: 100%;
+  box-sizing: border-box;
+}
+.panel .dropzone input[type="file"] { width: 100%; }
+
+/* Chat message content should wrap */
+.controls div { word-break: break-word; }
 
 .dropzone {
   border: 2px dashed color-mix(in oklab, var(--accent) 30%, var(--card-border));

@@ -79,6 +79,18 @@ const dict: Record<Lang, Record<string, string>> = {
     pos_y: 'Vị trí Y',
     include_audio: 'Gồm âm thanh',
     export_video: 'Xuất video',
+
+    // ChatGPT
+    tab_chat: 'ChatGPT',
+    chat_title: 'Phòng thí nghiệm ChatGPT',
+    chat_prompt_placeholder: 'Nhập prompt…',
+    chat_upload_images: 'Tải ảnh (tùy chọn)',
+    chat_upload_files: 'Tải file văn bản (tùy chọn)',
+    chat_send: 'Gửi tới GPT',
+    chat_result: 'Kết quả',
+    chat_open_camera: 'Mở camera',
+    chat_take_photo: 'Chụp ảnh',
+    chat_close_camera: 'Đóng camera',
   },
   en: {
     title: 'Fast, beautiful, secure document conversion',
@@ -158,6 +170,18 @@ const dict: Record<Lang, Record<string, string>> = {
     pos_y: 'Position Y',
     include_audio: 'Include audio',
     export_video: 'Export video',
+
+    // ChatGPT
+    tab_chat: 'ChatGPT',
+    chat_title: 'ChatGPT Lab',
+    chat_prompt_placeholder: 'Enter prompt…',
+    chat_upload_images: 'Upload images (optional)',
+    chat_upload_files: 'Upload text files (optional)',
+    chat_send: 'Send to GPT',
+    chat_result: 'Result',
+    chat_open_camera: 'Open camera',
+    chat_take_photo: 'Take photo',
+    chat_close_camera: 'Close camera',
   },
 }
 
