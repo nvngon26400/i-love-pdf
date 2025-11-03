@@ -1,20 +1,42 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import './App.css'
 import { motion } from 'framer-motion'
 import ThreeBackground from './components/ThreeBackground'
 import UploadDropzone from './components/UploadDropzone'
-import { htmlFileToPdf, imagesToPdf, pdfToJpg } from './utils/converters'
+import { 
+  htmlFileToPdf, 
+  imagesToPdf, 
+  pdfToJpg,
+  wordToPdf,
+  powerpointToPdf,
+  excelToPdf,
+  pdfToWord,
+  pdfToPowerpoint,
+  pdfToExcel,
+  pdfToPdfA
+} from './utils/converters'
+import { t, type Lang } from './utils/i18n'
 
-type ToolKey = 'html2pdf' | 'images2pdf' | 'pdf2jpg'
+type ToolKey = 'html2pdf' | 'images2pdf' | 'pdf2jpg' | 'word2pdf' | 'powerpoint2pdf' | 'excel2pdf' | 'pdf2word' | 'pdf2powerpoint' | 'pdf2excel' | 'pdf2pdfa'
+type ThemeKey = 'dark' | 'light' | 'neon' | 'sunset' | 'ocean' | 'forest'
 
-const toolsLeft: { key: ToolKey; title: string; desc: string }[] = [
-  { key: 'images2pdf', title: 'JPG sang PDF', desc: 'Ghép ảnh thành PDF' },
-  { key: 'html2pdf', title: 'HTML sang PDF', desc: 'Chuyển HTML → PDF' },
-]
-
-const toolsRight: { key: ToolKey; title: string; desc: string }[] = [
-  { key: 'pdf2jpg', title: 'PDF sang JPG', desc: 'Tách trang thành ảnh' },
-]
+function makeTools(lang: Lang) {
+  const left: { key: ToolKey; title: string; desc: string }[] = [
+    { key: 'images2pdf', title: t(lang, 'jpg_to_pdf_title'), desc: t(lang, 'jpg_to_pdf_desc') },
+    { key: 'word2pdf', title: t(lang, 'word_to_pdf_title'), desc: t(lang, 'word_to_pdf_desc') },
+    { key: 'powerpoint2pdf', title: t(lang, 'ppt_to_pdf_title'), desc: t(lang, 'ppt_to_pdf_desc') },
+    { key: 'excel2pdf', title: t(lang, 'xls_to_pdf_title'), desc: t(lang, 'xls_to_pdf_desc') },
+    { key: 'html2pdf', title: t(lang, 'html_to_pdf_title'), desc: t(lang, 'html_to_pdf_desc') },
+  ]
+  const right: { key: ToolKey; title: string; desc: string }[] = [
+    { key: 'pdf2jpg', title: t(lang, 'pdf_to_jpg_title'), desc: t(lang, 'pdf_to_jpg_desc') },
+    { key: 'pdf2word', title: t(lang, 'pdf_to_word_title'), desc: t(lang, 'pdf_to_word_desc') },
+    { key: 'pdf2powerpoint', title: t(lang, 'pdf_to_ppt_title'), desc: t(lang, 'pdf_to_ppt_desc') },
+    { key: 'pdf2excel', title: t(lang, 'pdf_to_xls_title'), desc: t(lang, 'pdf_to_xls_desc') },
+    { key: 'pdf2pdfa', title: t(lang, 'pdf_to_pdfa_title'), desc: t(lang, 'pdf_to_pdfa_desc') },
+  ]
+  return { left, right }
+}
 
 function App() {
   const [activeTool, setActiveTool] = useState<ToolKey | null>('html2pdf')
@@ -22,61 +44,172 @@ function App() {
   const [outfile, setOutfile] = useState('output')
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
+  const [lang, setLang] = useState<Lang>('vi')
+  const [theme, setTheme] = useState<ThemeKey>('dark')
+
+  // Load persisted settings
+  useEffect(() => {
+    const savedLang = localStorage.getItem('app.lang') as Lang | null
+    const savedTheme = localStorage.getItem('app.theme') as ThemeKey | null
+    if (savedLang) setLang(savedLang)
+    if (savedTheme) setTheme(savedTheme)
+  }, [])
+
+  useEffect(() => {
+    const root = document.documentElement
+    const body = document.body
+    root.classList.remove('theme-dark','theme-light','theme-neon','theme-sunset','theme-ocean','theme-forest')
+    body.classList.remove('theme-dark','theme-light','theme-neon','theme-sunset','theme-ocean','theme-forest')
+    const cls = `theme-${theme}`
+    root.classList.add(cls)
+    body.classList.add(cls)
+  }, [theme])
+
+  // Persist settings on change
+  useEffect(() => {
+    localStorage.setItem('app.lang', lang)
+  }, [lang])
+  useEffect(() => {
+    localStorage.setItem('app.theme', theme)
+  }, [theme])
+
+  const { left: toolsLeft, right: toolsRight } = useMemo(() => makeTools(lang), [lang])
 
   const onConvert = async () => {
     if (!activeTool || files.length === 0) {
-      setMessage('Vui lòng chọn file trước khi chuyển đổi.')
+      setMessage(t(lang, 'select_notice'))
       return
     }
     setBusy(true)
     setMessage(null)
     try {
-      if (activeTool === 'html2pdf') {
-        await htmlFileToPdf(files[0], `${outfile}.pdf`)
-      } else if (activeTool === 'images2pdf') {
-        await imagesToPdf(files, `${outfile}.pdf`)
-      } else if (activeTool === 'pdf2jpg') {
-        await pdfToJpg(files[0], `${outfile}.jpg`)
+      switch (activeTool) {
+        case 'html2pdf':
+          await htmlFileToPdf(files[0], `${outfile}.pdf`)
+          break
+        case 'images2pdf':
+          await imagesToPdf(files, `${outfile}.pdf`)
+          break
+        case 'word2pdf':
+          await wordToPdf(files[0], `${outfile}.pdf`)
+          break
+        case 'powerpoint2pdf':
+          await powerpointToPdf(files[0], `${outfile}.pdf`)
+          break
+        case 'excel2pdf':
+          await excelToPdf(files[0], `${outfile}.pdf`)
+          break
+        case 'pdf2jpg':
+          await pdfToJpg(files[0], `${outfile}.jpg`)
+          break
+        case 'pdf2word':
+          await pdfToWord(files[0], `${outfile}.docx`)
+          break
+        case 'pdf2powerpoint':
+          await pdfToPowerpoint(files[0], `${outfile}.pptx`)
+          break
+        case 'pdf2excel':
+          await pdfToExcel(files[0], `${outfile}.xlsx`)
+          break
+        case 'pdf2pdfa':
+          await pdfToPdfA(files[0], `${outfile}_optimized.pdf`)
+          break
+        default:
+          throw new Error('Chức năng không được hỗ trợ')
       }
-      setMessage('Hoàn tất! File đã được tải xuống.')
+      setMessage(t(lang, 'done_msg'))
     } catch (e) {
       console.error(e)
-      const msg = e instanceof Error ? e.message : 'Có lỗi xảy ra, vui lòng thử lại.'
+      const msg = e instanceof Error ? e.message : t(lang, 'error_generic')
       setMessage(msg)
     } finally {
       setBusy(false)
     }
   }
 
-  const accept = activeTool === 'images2pdf'
-    ? 'image/*'
-    : activeTool === 'pdf2jpg'
-    ? '.pdf,application/pdf'
-    : '.html,.htm,text/html'
+  const getAcceptType = (tool: ToolKey | null) => {
+    switch (tool) {
+      case 'images2pdf':
+        return 'image/*'
+      case 'word2pdf':
+        return '.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      case 'powerpoint2pdf':
+        return '.ppt,.pptx,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation'
+      case 'excel2pdf':
+        return '.xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      case 'html2pdf':
+        return '.html,.htm,text/html'
+      case 'pdf2jpg':
+      case 'pdf2word':
+      case 'pdf2powerpoint':
+      case 'pdf2excel':
+      case 'pdf2pdfa':
+        return '.pdf,application/pdf'
+      default:
+        return '*'
+    }
+  }
 
-  const panelTitle =
-    activeTool === 'html2pdf'
-      ? 'HTML sang PDF'
-      : activeTool === 'images2pdf'
-      ? 'JPG sang PDF'
-      : 'PDF sang JPG'
+  const getPanelTitle = (tool: ToolKey | null) => {
+    switch (tool) {
+      case 'html2pdf':
+        return t(lang, 'html_to_pdf_title')
+      case 'images2pdf':
+        return t(lang, 'jpg_to_pdf_title')
+      case 'word2pdf':
+        return t(lang, 'word_to_pdf_title')
+      case 'powerpoint2pdf':
+        return t(lang, 'ppt_to_pdf_title')
+      case 'excel2pdf':
+        return t(lang, 'xls_to_pdf_title')
+      case 'pdf2jpg':
+        return t(lang, 'pdf_to_jpg_title')
+      case 'pdf2word':
+        return t(lang, 'pdf_to_word_title')
+      case 'pdf2powerpoint':
+        return t(lang, 'pdf_to_ppt_title')
+      case 'pdf2excel':
+        return t(lang, 'pdf_to_xls_title')
+      case 'pdf2pdfa':
+        return t(lang, 'pdf_to_pdfa_title')
+      default:
+        return t(lang, 'panel_choose')
+    }
+  }
+
+  const accept = getAcceptType(activeTool)
+  const panelTitle = getPanelTitle(activeTool)
 
   return (
     <div className="app-container">
       <ThreeBackground />
       <div className="content">
+        <div className="topbar">
+          <select value={lang} onChange={(e) => setLang(e.target.value as Lang)}>
+            <option value="vi">🇻🇳 Tiếng Việt</option>
+            <option value="en">🇺🇸 English</option>
+          </select>
+          <select value={theme} onChange={(e) => setTheme(e.target.value as ThemeKey)}>
+            <option value="dark">{t(lang,'theme_dark')}</option>
+            <option value="light">{t(lang,'theme_light')}</option>
+            <option value="neon">{t(lang,'theme_neon')}</option>
+            <option value="sunset">{t(lang,'theme_sunset')}</option>
+            <option value="ocean">{t(lang,'theme_ocean')}</option>
+            <option value="forest">{t(lang,'theme_forest')}</option>
+          </select>
+        </div>
         <motion.h1
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="title"
         >
-          Chuyển đổi tài liệu nhanh, đẹp, an toàn
+          {t(lang, 'title')}
         </motion.h1>
 
         <div className="grid">
           <section className="column">
-            <h2>CHUYỂN SANG PDF</h2>
+            <h2>{t(lang, 'to_pdf')}</h2>
             <div className="cards">
               {toolsLeft.map((t) => (
                 <motion.button
@@ -96,7 +229,7 @@ function App() {
           </section>
 
           <section className="column">
-            <h2>CHUYỂN ĐỔI TỪ PDF</h2>
+            <h2>{t(lang, 'from_pdf')}</h2>
             <div className="cards">
               {toolsRight.map((t) => (
                 <motion.button
@@ -134,7 +267,7 @@ function App() {
               type="text"
               value={outfile}
               onChange={(e) => setOutfile(e.target.value)}
-              placeholder="Tên file xuất"
+              placeholder={t(lang, 'outfile_placeholder')}
             />
             <motion.button
               whileHover={{ scale: 1.03 }}
@@ -143,7 +276,7 @@ function App() {
               disabled={busy}
               onClick={onConvert}
             >
-              {busy ? 'Đang xử lý...' : 'Chuyển đổi và tải xuống'}
+              {busy ? t(lang, 'converting') : t(lang, 'convert_btn')}
             </motion.button>
           </div>
           {message && <p className="message">{message}</p>}

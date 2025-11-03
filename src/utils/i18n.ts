@@ -1,0 +1,98 @@
+export type Lang = 'vi' | 'en'
+
+const dict: Record<Lang, Record<string, string>> = {
+  vi: {
+    title: 'Chuyển đổi tài liệu nhanh, đẹp, an toàn',
+    to_pdf: 'CHUYỂN SANG PDF',
+    from_pdf: 'CHUYỂN ĐỔI TỪ PDF',
+
+    jpg_to_pdf_title: '📸 JPG sang PDF',
+    jpg_to_pdf_desc: 'Ghép ảnh thành PDF',
+    word_to_pdf_title: '📄 WORD sang PDF',
+    word_to_pdf_desc: 'Chuyển DOCX → PDF',
+    ppt_to_pdf_title: '📊 POWERPOINT sang PDF',
+    ppt_to_pdf_desc: 'Chuyển PPTX → PDF',
+    xls_to_pdf_title: '📈 EXCEL sang PDF',
+    xls_to_pdf_desc: 'Chuyển XLSX → PDF',
+    html_to_pdf_title: '🌐 HTML sang PDF',
+    html_to_pdf_desc: 'Chuyển HTML → PDF',
+
+    pdf_to_jpg_title: '📸 PDF sang JPG',
+    pdf_to_jpg_desc: 'Tách trang thành ảnh',
+    pdf_to_word_title: '📄 PDF sang WORD',
+    pdf_to_word_desc: 'Chuyển PDF → DOCX',
+    pdf_to_ppt_title: '📊 PDF sang POWERPOINT',
+    pdf_to_ppt_desc: 'Chuyển PDF → PPTX',
+    pdf_to_xls_title: '📈 PDF sang EXCEL',
+    pdf_to_xls_desc: 'Chuyển PDF → XLSX',
+    pdf_to_pdfa_title: '📋 PDF sang PDF/A',
+    pdf_to_pdfa_desc: 'Tối ưu hóa PDF',
+
+    panel_choose: 'Chọn chức năng',
+    outfile_placeholder: 'Tên file xuất',
+    convert_btn: 'Chuyển đổi và tải xuống',
+    converting: 'Đang xử lý...',
+    select_notice: 'Vui lòng chọn file trước khi chuyển đổi.',
+    done_msg: 'Hoàn tất! File đã được tải xuống.',
+    error_generic: 'Có lỗi xảy ra, vui lòng thử lại.',
+    unsupported: 'Chức năng không được hỗ trợ',
+
+    lang_label: 'Ngôn ngữ',
+    theme_label: 'Giao diện',
+    theme_dark: '🌙 Tối',
+    theme_light: '☀️ Sáng',
+    theme_neon: '⚡ Neon',
+    theme_sunset: '🌇 Sunset',
+    theme_ocean: '🌊 Ocean',
+    theme_forest: '🌲 Forest',
+  },
+  en: {
+    title: 'Fast, beautiful, secure document conversion',
+    to_pdf: 'CONVERT TO PDF',
+    from_pdf: 'CONVERT FROM PDF',
+
+    jpg_to_pdf_title: '📸 JPG to PDF',
+    jpg_to_pdf_desc: 'Combine images into PDF',
+    word_to_pdf_title: '📄 WORD to PDF',
+    word_to_pdf_desc: 'Convert DOCX → PDF',
+    ppt_to_pdf_title: '📊 POWERPOINT to PDF',
+    ppt_to_pdf_desc: 'Convert PPTX → PDF',
+    xls_to_pdf_title: '📈 EXCEL to PDF',
+    xls_to_pdf_desc: 'Convert XLSX → PDF',
+    html_to_pdf_title: '🌐 HTML to PDF',
+    html_to_pdf_desc: 'Convert HTML → PDF',
+
+    pdf_to_jpg_title: '📸 PDF to JPG',
+    pdf_to_jpg_desc: 'Export pages as images',
+    pdf_to_word_title: '📄 PDF to WORD',
+    pdf_to_word_desc: 'Convert PDF → DOCX',
+    pdf_to_ppt_title: '📊 PDF to POWERPOINT',
+    pdf_to_ppt_desc: 'Convert PDF → PPTX',
+    pdf_to_xls_title: '📈 PDF to EXCEL',
+    pdf_to_xls_desc: 'Convert PDF → XLSX',
+    pdf_to_pdfa_title: '📋 PDF to PDF/A',
+    pdf_to_pdfa_desc: 'Optimize PDF',
+
+    panel_choose: 'Choose a tool',
+    outfile_placeholder: 'Output filename',
+    convert_btn: 'Convert & Download',
+    converting: 'Processing...',
+    select_notice: 'Please select files before converting.',
+    done_msg: 'Done! Your file has been downloaded.',
+    error_generic: 'An error occurred, please try again.',
+    unsupported: 'Unsupported feature',
+
+    lang_label: 'Language',
+    theme_label: 'Theme',
+    theme_dark: '🌙 Dark',
+    theme_light: '☀️ Light',
+    theme_neon: '⚡ Neon',
+    theme_sunset: '🌇 Sunset',
+    theme_ocean: '🌊 Ocean',
+    theme_forest: '🌲 Forest',
+  },
+}
+
+export function t(lang: Lang, key: string) {
+  return dict[lang]?.[key] ?? key
+}

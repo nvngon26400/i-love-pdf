@@ -1,15 +1,120 @@
 :root {
+  --bg: #0b0b12;
+  --text: rgba(255,255,255,0.92);
+  --muted: rgba(255,255,255,0.75);
+  --card-bg: rgba(255,255,255,0.06);
+  --card-border: rgba(255,255,255,0.10);
+  --panel-bg: rgba(255,255,255,0.08);
+  --panel-border: rgba(255,255,255,0.12);
+  --input-bg: rgba(255,255,255,0.06);
+  --primary-from: #6d58ff;
+  --primary-to: #9b6dff;
+  --accent: #6d58ff;
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color-scheme: dark;
-  color: rgba(255, 255, 255, 0.92);
-  background: radial-gradient(1200px 600px at 20% 10%, #1a1525, #0b0b12),
-              radial-gradient(800px 600px at 80% 80%, #121524, #0b0b12);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.theme-dark {
+  color-scheme: dark;
+  color: var(--text);
+  background: radial-gradient(1200px 600px at 20% 10%, #1a1525, var(--bg)),
+              radial-gradient(800px 600px at 80% 80%, #121524, var(--bg));
+}
+
+.theme-light {
+  color-scheme: light;
+  --bg: #f5f7ff;
+  --text: #213547;
+  --muted: #444b6e;
+  --card-bg: rgba(255,255,255,0.9);
+  --card-border: rgba(0,0,0,0.08);
+  --panel-bg: rgba(255,255,255,0.95);
+  --panel-border: rgba(0,0,0,0.08);
+  --input-bg: rgba(0,0,0,0.04);
+  --primary-from: #6d58ff;
+  --primary-to: #9b6dff;
+  --accent: #6d58ff;
+  color: var(--text);
+  background: radial-gradient(1200px 600px at 20% 10%, #e7ebff, #f5f7ff),
+              radial-gradient(800px 600px at 80% 80%, #eef2ff, #f5f7ff);
+}
+
+/* Preset themes */
+.theme-neon {
+  color-scheme: dark;
+  --bg: #0a0b10;
+  --text: rgba(255,255,255,0.92);
+  --muted: rgba(255,255,255,0.75);
+  --card-bg: rgba(20,20,30,0.6);
+  --card-border: rgba(120,120,255,0.25);
+  --panel-bg: rgba(25,25,40,0.7);
+  --panel-border: rgba(120,120,255,0.25);
+  --input-bg: rgba(30,30,50,0.5);
+  --accent: #7c4dff;
+  --primary-from: #00f5ff;
+  --primary-to: #7c4dff;
+  color: var(--text);
+  background: radial-gradient(1200px 600px at 20% 10%, #08122b, var(--bg)),
+              radial-gradient(800px 600px at 80% 80%, #10152a, var(--bg));
+}
+
+.theme-sunset {
+  color-scheme: light;
+  --bg: #fff6f0;
+  --text: #2d1e1b;
+  --muted: #5b3a33;
+  --card-bg: rgba(255,255,255,0.95);
+  --card-border: rgba(255,120,80,0.25);
+  --panel-bg: rgba(255,255,255,0.97);
+  --panel-border: rgba(255,120,80,0.25);
+  --input-bg: rgba(255,120,80,0.08);
+  --accent: #ff7a59;
+  --primary-from: #ff7a59;
+  --primary-to: #ffb86b;
+  color: var(--text);
+  background: radial-gradient(1200px 600px at 20% 10%, #ffe1cf, #fff6f0),
+              radial-gradient(800px 600px at 80% 80%, #ffd6be, #fff6f0);
+}
+
+.theme-ocean {
+  color-scheme: dark;
+  --bg: #06141a;
+  --text: rgba(255,255,255,0.92);
+  --muted: rgba(255,255,255,0.75);
+  --card-bg: rgba(12,36,46,0.6);
+  --card-border: rgba(80,180,220,0.25);
+  --panel-bg: rgba(16,44,56,0.7);
+  --panel-border: rgba(80,180,220,0.25);
+  --input-bg: rgba(18,52,66,0.5);
+  --accent: #3ec5ff;
+  --primary-from: #3ec5ff;
+  --primary-to: #6dd5ff;
+  color: var(--text);
+  background: radial-gradient(1200px 600px at 20% 10%, #0a2430, var(--bg)),
+              radial-gradient(800px 600px at 80% 80%, #0a1d27, var(--bg));
+}
+
+.theme-forest {
+  color-scheme: dark;
+  --bg: #0b120e;
+  --text: rgba(255,255,255,0.92);
+  --muted: rgba(255,255,255,0.75);
+  --card-bg: rgba(20,34,26,0.6);
+  --card-border: rgba(100,180,120,0.25);
+  --panel-bg: rgba(24,40,30,0.7);
+  --panel-border: rgba(100,180,120,0.25);
+  --input-bg: rgba(28,46,34,0.5);
+  --accent: #5bd08f;
+  --primary-from: #5bd08f;
+  --primary-to: #9de59c;
+  color: var(--text);
+  background: radial-gradient(1200px 600px at 20% 10%, #0f2619, var(--bg)),
+              radial-gradient(800px 600px at 80% 80%, #0d1e15, var(--bg));
 }
 
 a {
@@ -32,29 +137,16 @@ h1 {
   line-height: 1.1;
 }
 
-button {
+button, select {
   border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.12);
+  border: 1px solid var(--card-border);
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: rgba(255,255,255,0.08);
+  background-color: var(--card-bg);
   cursor: pointer;
   transition: transform 0.1s ease;
 }
 button:focus,
-button:focus-visible { outline: none; }
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
+button:focus-visible, select:focus { outline: none; }
