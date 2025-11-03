@@ -39,6 +39,12 @@ export default function YouTubeLab({ lang }: { lang: Lang }) {
   const parsed = useMemo(() => parseYouTubeId(input), [input])
   const [touched, setTouched] = useState(false)
   const canOpen = !!parsed.id
+  const isLikelyUrl = useMemo(() => {
+    const s = input.trim()
+    if (!s) return false
+    // nhận diện chuỗi giống URL YouTube; nếu không giống URL thì coi như từ khóa
+    return /^(https?:\/\/|www\.)|youtube\.com|youtu\.be/.test(s)
+  }, [input])
 
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [related, setRelated] = useState<PipedVideo[]>([])
@@ -333,7 +339,7 @@ export default function YouTubeLab({ lang }: { lang: Lang }) {
         {canOpen && (
           <button onClick={()=>setSelectedId(parsed.id!)}>▶︎ {t(lang,'youtube_open_video')}</button>
         )}
-        {!canOpen && touched && (
+        {!canOpen && touched && isLikelyUrl && (
           <p className="message" style={{gridColumn:'1 / -1'}}>{t(lang, 'youtube_invalid_url')}</p>
         )}
       </div>
