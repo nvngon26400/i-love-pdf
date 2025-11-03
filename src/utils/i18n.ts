@@ -64,6 +64,21 @@ const dict: Record<Lang, Record<string, string>> = {
     sharpen: 'Làm nét',
     denoise: 'Giảm nhiễu',
     upscale2x: 'Nâng kích thước 2×',
+
+    // Video
+    tab_video: 'Video',
+    video_lab_title: 'Phòng thí nghiệm Video',
+    upload_video: 'Tải video lên',
+    start_time: 'Bắt đầu (giây)',
+    end_time: 'Kết thúc (giây)',
+    speed: 'Tốc độ',
+    text_overlay: 'Chữ overlay',
+    font_size: 'Cỡ chữ',
+    color: 'Màu',
+    pos_x: 'Vị trí X',
+    pos_y: 'Vị trí Y',
+    include_audio: 'Gồm âm thanh',
+    export_video: 'Xuất video',
   },
   en: {
     title: 'Fast, beautiful, secure document conversion',
@@ -128,6 +143,21 @@ const dict: Record<Lang, Record<string, string>> = {
     sharpen: 'Sharpen',
     denoise: 'Denoise',
     upscale2x: 'Upscale 2×',
+
+    // Video
+    tab_video: 'Video',
+    video_lab_title: 'Video Lab',
+    upload_video: 'Upload video',
+    start_time: 'Start (sec)',
+    end_time: 'End (sec)',
+    speed: 'Speed',
+    text_overlay: 'Text overlay',
+    font_size: 'Font size',
+    color: 'Color',
+    pos_x: 'Position X',
+    pos_y: 'Position Y',
+    include_audio: 'Include audio',
+    export_video: 'Export video',
   },
 }
 

@@ -151,7 +151,7 @@ export default function ImageLab({ lang }: { lang: Lang }) {
         <input type="file" accept="image/*" onChange={(e)=>setFile(e.target.files?.[0]||null)} />
       </div>
 
-      <div style={{display:'grid', gridTemplateColumns:'1fr 280px', gap:16, marginTop:12}}>
+      <div className="two-col" style={{marginTop:12}}>
         <div style={{background:'var(--card-bg)', border:'1px solid var(--card-border)', borderRadius:12, padding:8}}>
           <img ref={imgRef} alt="preview" style={{display:'none'}} />
           <canvas ref={canvasRef} style={{maxWidth:'100%'}} />

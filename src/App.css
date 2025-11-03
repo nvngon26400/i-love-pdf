@@ -42,6 +42,11 @@
   grid-template-columns: 1fr 1fr;
   gap: 24px;
 }
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 16px;
+}
 .column {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
@@ -96,6 +101,8 @@
 }
 .panel h3 { margin: 0 0 12px 0; }
 
+.controls { display: grid; gap: 8px; }
+
 .dropzone {
   border: 2px dashed color-mix(in oklab, var(--accent) 30%, var(--card-border));
   border-radius: 14px;
@@ -145,6 +152,7 @@
 @media (max-width: 900px) {
   .grid { grid-template-columns: 1fr; }
 }
+.tabbar { display:flex; gap:8px; flex-wrap: wrap; }
 .tabs {
   display: flex;
   gap: 8px;
@@ -158,4 +166,22 @@
   border-color: var(--accent);
   box-shadow: 0 0 0 2px color-mix(in oklab, var(--accent) 35%, transparent) inset;
 }
-.tabbar button.active { border-color: var(--accent); }
+ .tabbar button.active { border-color: var(--accent); }
+
+/* Mobile responsive tweaks */
+@media (max-width: 600px) {
+  .content { padding: 2rem 1rem 4rem; }
+  .title { font-size: 20px; margin-bottom: 14px; }
+  .topbar { flex-wrap: wrap; justify-content: flex-start; gap: 8px; }
+  .tabs { width: 100%; }
+  .tabs button { flex: 1; padding: 8px 10px; }
+  .topbar select { flex: 1; min-width: 140px; }
+
+  .column { padding: 14px; border-radius: 14px; }
+  .tool-card { padding: 10px 12px; }
+  .panel { padding: 14px; border-radius: 14px; }
+
+  .two-col { grid-template-columns: 1fr; gap: 12px; }
+  .outfile { grid-template-columns: 1fr; }
+  .primary { width: 100%; }
+}
