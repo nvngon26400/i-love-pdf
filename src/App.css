@@ -8,6 +8,7 @@
   position: fixed;
   inset: 0;
   z-index: 0;
+  pointer-events: none; /* nền không chặn thao tác */
 }
 .content {
   position: relative;
@@ -36,6 +37,30 @@
   border: 1px solid var(--card-border);
   color: inherit;
 }
+
+/* Tabbar - chips style */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.tabs button {
+  flex: 0 0 auto;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+  border: 1px solid var(--card-border);
+  color: inherit;
+  transition: transform 0.1s ease, background 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+}
+.tabs button.active {
+  background: linear-gradient(90deg, var(--primary-from), var(--primary-to));
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 6px 16px rgba(109, 88, 255, 0.35);
+}
+.tabs button:hover { transform: translateY(-1px); }
 
 .grid {
   display: grid;
@@ -198,8 +223,9 @@
   .content { padding: 2rem 1rem 4rem; }
   .title { font-size: 20px; margin-bottom: 14px; }
   .topbar { flex-wrap: wrap; justify-content: flex-start; gap: 8px; }
-  .tabs { width: 100%; }
-  .tabs button { flex: 1; padding: 8px 10px; }
+  .tabs { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 6px; gap: 8px; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tabs button { flex: 0 0 auto; padding: 8px 12px; font-size: 14px; }
   .topbar select { flex: 1; min-width: 140px; }
 
   .column { padding: 14px; border-radius: 14px; }
@@ -208,5 +234,26 @@
 
   .two-col { grid-template-columns: 1fr; gap: 12px; }
   .outfile { grid-template-columns: 1fr; }
-  .primary { width: 100%; }
+.primary { width: 100%; }
+}
+
+/* ===== Spider‑Man background animation ===== */
+.spidey-scene { width: 100%; height: 100%; display: block; }
+.spidey-web { transform-origin: 0% 10%; animation: web-sway 3.2s ease-in-out infinite; }
+.spidey {
+  transform-box: fill-box; /* để transform dựa theo box của nhóm */
+  animation: spidey-fly 12s linear infinite;
+}
+
+@keyframes spidey-fly {
+  0%   { transform: translate(-25vw, 8vh) scale(0.9) rotate(-6deg); }
+  25%  { transform: translate(15vw, -4vh) scale(1.0) rotate(3deg); }
+  50%  { transform: translate(55vw, 6vh) scale(1.0) rotate(-4deg); }
+  75%  { transform: translate(85vw, -3vh) scale(0.95) rotate(2deg); }
+  100% { transform: translate(125vw, 10vh) scale(0.9) rotate(-6deg); }
+}
+
+@keyframes web-sway {
+  0%, 100% { transform: rotate(-4deg); opacity: 0.55; }
+  50%      { transform: rotate(3deg);  opacity: 0.75; }
 }
