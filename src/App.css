@@ -257,3 +257,82 @@
   0%, 100% { transform: rotate(-4deg); opacity: 0.55; }
   50%      { transform: rotate(3deg);  opacity: 0.75; }
 }
+
+/* ===== YouTube search layout ===== */
+.yt-search {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  align-items: center;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 12px;
+  margin-top: 8px;
+}
+.yt-input {
+  width: 100%;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  background: var(--input-bg);
+  color: inherit;
+}
+.yt-input::placeholder { opacity: 0.7; }
+.yt-search button { height: 36px; padding: 0 14px; border-radius: 8px; }
+
+@media (max-width: 640px) {
+  .yt-search { grid-template-columns: 1fr; }
+  .yt-search button { width: 100%; }
+}
+
+/* ===== Global ambient background animations (aurora + particles) ===== */
+/* Aurora gradient sweeping softly across the whole page */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -20vh -20vw;
+  z-index: 0;
+  pointer-events: none;
+  background: conic-gradient(from 180deg at 10% 20%,
+              color-mix(in oklab, var(--accent) 35%, transparent),
+              color-mix(in oklab, var(--primary-from) 30%, transparent),
+              color-mix(in oklab, var(--primary-to) 30%, transparent),
+              transparent 40%);
+  filter: blur(80px) saturate(120%);
+  opacity: 0.18;
+  animation: auroraShift 24s linear infinite;
+}
+
+/* Floating particles for subtle motion at mid and lower page */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(12px 12px at 8% 86%, color-mix(in oklab, var(--accent) 80%, transparent) 0%, transparent 65%),
+    radial-gradient(10px 10px at 18% 72%, color-mix(in oklab, var(--primary-from) 80%, transparent) 0%, transparent 70%),
+    radial-gradient(12px 12px at 32% 78%, color-mix(in oklab, var(--primary-to) 80%, transparent) 0%, transparent 70%),
+    radial-gradient(12px 12px at 64% 84%, color-mix(in oklab, var(--accent) 80%, transparent) 0%, transparent 70%),
+    radial-gradient(10px 10px at 82% 68%, color-mix(in oklab, var(--primary-from) 80%, transparent) 0%, transparent 70%),
+    radial-gradient(12px 12px at 92% 82%, color-mix(in oklab, var(--primary-to) 80%, transparent) 0%, transparent 70%);
+  opacity: 0.15;
+  filter: blur(0.6px);
+  animation: floatBubbles 16s ease-in-out infinite;
+}
+
+@keyframes auroraShift {
+  0%   { transform: translate3d(-2vw, -3vh, 0) rotate(0deg) scale(1.05); }
+  25%  { transform: translate3d(3vw, 1vh, 0) rotate(90deg) scale(1.08); }
+  50%  { transform: translate3d(0vw, 3vh, 0) rotate(180deg) scale(1.04); }
+  75%  { transform: translate3d(-3vw, -1vh, 0) rotate(270deg) scale(1.07); }
+  100% { transform: translate3d(-2vw, -3vh, 0) rotate(360deg) scale(1.05); }
+}
+
+@keyframes floatBubbles {
+  0%, 100% { transform: translate3d(0, 0, 0); opacity: 0.14; }
+  50%      { transform: translate3d(0, -2vh, 0); opacity: 0.22; }
+}
