@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import './App.css'
 import { motion } from 'framer-motion'
 import ThreeBackground from './components/ThreeBackground'
+import ImageLab from './components/ImageLab'
 import UploadDropzone from './components/UploadDropzone'
 import { 
   htmlFileToPdf, 
@@ -19,6 +20,7 @@ import { t, type Lang } from './utils/i18n'
 
 type ToolKey = 'html2pdf' | 'images2pdf' | 'pdf2jpg' | 'word2pdf' | 'powerpoint2pdf' | 'excel2pdf' | 'pdf2word' | 'pdf2powerpoint' | 'pdf2excel' | 'pdf2pdfa'
 type ThemeKey = 'dark' | 'light' | 'neon' | 'sunset' | 'ocean' | 'forest'
+type AppTab = 'pdf' | 'image'
 
 function makeTools(lang: Lang) {
   const left: { key: ToolKey; title: string; desc: string }[] = [
@@ -46,6 +48,7 @@ function App() {
   const [message, setMessage] = useState<string | null>(null)
   const [lang, setLang] = useState<Lang>('vi')
   const [theme, setTheme] = useState<ThemeKey>('dark')
+  const [tab, setTab] = useState<AppTab>('pdf')
 
   // Load persisted settings
   useEffect(() => {
@@ -72,6 +75,9 @@ function App() {
   useEffect(() => {
     localStorage.setItem('app.theme', theme)
   }, [theme])
+  useEffect(() => {
+    localStorage.setItem('app.tab', tab)
+  }, [tab])
 
   const { left: toolsLeft, right: toolsRight } = useMemo(() => makeTools(lang), [lang])
 
@@ -185,6 +191,10 @@ function App() {
       <ThreeBackground />
       <div className="content">
         <div className="topbar">
+          <div className="tabs">
+            <button className={tab==='pdf'?'active':''} onClick={()=>setTab('pdf')}>{t(lang,'tab_pdf')}</button>
+            <button className={tab==='image'?'active':''} onClick={()=>setTab('image')}>{t(lang,'tab_image')}</button>
+          </div>
           <select value={lang} onChange={(e) => setLang(e.target.value as Lang)}>
             <option value="vi">🇻🇳 Tiếng Việt</option>
             <option value="en">🇺🇸 English</option>
@@ -198,6 +208,7 @@ function App() {
             <option value="forest">{t(lang,'theme_forest')}</option>
           </select>
         </div>
+        {tab==='pdf' && (
         <motion.h1
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -206,7 +217,9 @@ function App() {
         >
           {t(lang, 'title')}
         </motion.h1>
+        )}
 
+        {tab==='pdf' ? (
         <div className="grid">
           <section className="column">
             <h2>{t(lang, 'to_pdf')}</h2>
@@ -248,7 +261,11 @@ function App() {
             </div>
           </section>
         </div>
+        ) : (
+          <ImageLab lang={lang} />
+        )}
 
+        {tab==='pdf' && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -281,6 +298,7 @@ function App() {
           </div>
           {message && <p className="message">{message}</p>}
         </motion.div>
+        )}
       </div>
     </div>
   )
