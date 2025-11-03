@@ -20,7 +20,6 @@ import {
 import { t, type Lang } from './utils/i18n'
 
 type ToolKey = 'html2pdf' | 'images2pdf' | 'pdf2jpg' | 'word2pdf' | 'powerpoint2pdf' | 'excel2pdf' | 'pdf2word' | 'pdf2powerpoint' | 'pdf2excel' | 'pdf2pdfa'
-type ThemeKey = 'dark' | 'light' | 'neon' | 'sunset' | 'ocean' | 'forest'
 type AppTab = 'pdf' | 'image' | 'video'
 
 function makeTools(lang: Lang) {
@@ -48,16 +47,13 @@ function App() {
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
   const [lang, setLang] = useState<Lang>('vi')
-  const [theme, setTheme] = useState<ThemeKey>('dark')
   const [tab, setTab] = useState<AppTab>('pdf')
 
   // Load persisted settings
   useEffect(() => {
     const savedLang = localStorage.getItem('app.lang') as Lang | null
-    const savedTheme = localStorage.getItem('app.theme') as ThemeKey | null
     const savedTab = localStorage.getItem('app.tab') as AppTab | null
     if (savedLang) setLang(savedLang)
-    if (savedTheme) setTheme(savedTheme)
     if (savedTab) setTab(savedTab)
   }, [])
 
@@ -66,18 +62,15 @@ function App() {
     const body = document.body
     root.classList.remove('theme-dark','theme-light','theme-neon','theme-sunset','theme-ocean','theme-forest')
     body.classList.remove('theme-dark','theme-light','theme-neon','theme-sunset','theme-ocean','theme-forest')
-    const cls = `theme-${theme}`
+    const cls = 'theme-forest'
     root.classList.add(cls)
     body.classList.add(cls)
-  }, [theme])
+  }, [])
 
   // Persist settings on change
   useEffect(() => {
     localStorage.setItem('app.lang', lang)
   }, [lang])
-  useEffect(() => {
-    localStorage.setItem('app.theme', theme)
-  }, [theme])
   useEffect(() => {
     localStorage.setItem('app.tab', tab)
   }, [tab])
@@ -202,14 +195,6 @@ function App() {
           <select value={lang} onChange={(e) => setLang(e.target.value as Lang)}>
             <option value="vi">🇻🇳 Tiếng Việt</option>
             <option value="en">🇺🇸 English</option>
-          </select>
-          <select value={theme} onChange={(e) => setTheme(e.target.value as ThemeKey)}>
-            <option value="dark">{t(lang,'theme_dark')}</option>
-            <option value="light">{t(lang,'theme_light')}</option>
-            <option value="neon">{t(lang,'theme_neon')}</option>
-            <option value="sunset">{t(lang,'theme_sunset')}</option>
-            <option value="ocean">{t(lang,'theme_ocean')}</option>
-            <option value="forest">{t(lang,'theme_forest')}</option>
           </select>
         </div>
         {tab==='pdf' && (

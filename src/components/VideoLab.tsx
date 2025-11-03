@@ -8,7 +8,7 @@ export default function VideoLab({ lang }: { lang: Lang }) {
   const [file, setFile] = useState<File | null>(null)
 
   // Controls
-  const [brightness, setBrightness] = useState(0)
+  const [brightness, setBrightness] = useState(100)
   const [contrast, setContrast] = useState(0)
   const [saturation, setSaturation] = useState(0)
   const [speed, setSpeed] = useState(1)
@@ -51,7 +51,7 @@ export default function VideoLab({ lang }: { lang: Lang }) {
       canvas.width = video.videoWidth
       canvas.height = video.videoHeight
       ctx.clearRect(0,0,canvas.width,canvas.height)
-      ctx.filter = `brightness(${1 + brightness/100}) contrast(${1 + contrast/100}) saturate(${1 + saturation/100})`
+      ctx.filter = `brightness(${brightness/100}) contrast(${1 + contrast/100}) saturate(${1 + saturation/100})`
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
       if (text) {
         ctx.filter = 'none'
@@ -139,7 +139,7 @@ export default function VideoLab({ lang }: { lang: Lang }) {
           <label>{t(lang,'speed')}</label>
           <input type="range" min={0.25} max={2} step={0.05} value={speed} onChange={(e)=>setSpeed(parseFloat(e.target.value))} />
           <label>{t(lang,'brightness')}</label>
-          <input type="range" min={-100} max={100} value={brightness} onChange={(e)=>setBrightness(parseInt(e.target.value))} />
+          <input type="range" min={0} max={200} value={brightness} onChange={(e)=>setBrightness(parseInt(e.target.value))} />
           <label>{t(lang,'contrast')}</label>
           <input type="range" min={-100} max={100} value={contrast} onChange={(e)=>setContrast(parseInt(e.target.value))} />
           <label>{t(lang,'saturation')}</label>

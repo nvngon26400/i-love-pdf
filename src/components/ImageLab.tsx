@@ -9,7 +9,7 @@ export default function ImageLab({ lang }: { lang: Lang }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const imgRef = useRef<HTMLImageElement>(null)
 
-  const [brightness, setBrightness] = useState(0)
+  const [brightness, setBrightness] = useState(100)
   const [contrast, setContrast] = useState(0)
   const [saturation, setSaturation] = useState(0)
   const [flipH, setFlipH] = useState(false)
@@ -53,10 +53,10 @@ export default function ImageLab({ lang }: { lang: Lang }) {
     ctx.restore()
 
     // Filters via CSS-like approach
-    if (brightness !== 0 || contrast !== 0 || saturation !== 0) {
+    if (brightness !== 100 || contrast !== 0 || saturation !== 0) {
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
       const data = imageData.data
-      const b = brightness / 100
+      const b = (brightness - 100) / 100
       const c = contrast / 100
       const s = saturation / 100
       for (let i = 0; i < data.length; i += 4) {
@@ -158,7 +158,7 @@ export default function ImageLab({ lang }: { lang: Lang }) {
         </div>
         <div className="controls" style={{background:'var(--card-bg)', border:'1px solid var(--card-border)', borderRadius:12, padding:12}}>
           <label>{t(lang,'brightness')}</label>
-          <input type="range" min={-100} max={100} value={brightness} onChange={(e)=>setBrightness(parseInt(e.target.value))} />
+          <input type="range" min={0} max={200} value={brightness} onChange={(e)=>setBrightness(parseInt(e.target.value))} />
           <label>{t(lang,'contrast')}</label>
           <input type="range" min={-100} max={100} value={contrast} onChange={(e)=>setContrast(parseInt(e.target.value))} />
           <label>{t(lang,'saturation')}</label>
