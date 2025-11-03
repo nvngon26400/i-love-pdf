@@ -1,9 +1,9 @@
 import { useRef, useState, useEffect } from 'react'
 import { t, type Lang } from '../utils/i18n'
 
-// WARNING: Storing API keys in client code is insecure.
-// For demo/local use only. Prefer a server proxy in production.
-const OPENAI_KEY = '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'
+// API key is read from Vite env (set in .env.local)
+// Never hardcode secrets in source files.
+const OPENAI_KEY = (import.meta.env.VITE_OPENAI_KEY ?? '') as string
 
 type ChatImage = { name: string; dataUrl: string }
 type ChatTextFile = { name: string; content: string }
@@ -97,6 +97,10 @@ export default function ChatLab({ lang }: { lang: Lang }) {
 
   const callGpt = async () => {
     if (!prompt.trim()) return
+    if (!OPENAI_KEY) {
+      setMessages(prev => [...prev, { role: 'assistant', content: 'Chưa cấu hình API key. Tạo file .env.local với VITE_OPENAI_KEY và tải lại trang.' }])
+      return
+    }
     setBusy(true)
     try {
       const content: any[] = []
